@@ -45,9 +45,11 @@ async fn main() -> std::io::Result<()> {
     // Create a instance of where the Raft data will be stored.
     let store = Arc::new(ExampleStore::default());
 
+    let client = Arc::new(reqwest::Client::new());
+
     // Create the network layer that will connect and communicate the raft instances and
     // will be used in conjunction with the store created above.
-    let network = Arc::new(ExampleNetwork { store: store.clone() });
+    let network = Arc::new(ExampleNetwork { store: store.clone(), client: client.clone() });
 
     // Create a local raft instance.
     let raft = Raft::new(node_id, config.clone(), network, store.clone());
@@ -58,6 +60,7 @@ async fn main() -> std::io::Result<()> {
         id: options.id,
         raft,
         store,
+        client: client.clone(),
         config,
     });
 
