@@ -39,7 +39,7 @@ impl ExampleNetwork {
         };
 
         let url = format!("http://{}/{}", addr, uri);
-
+      
         let resp = self.client.post(url).json(&req).send().await.map_err(|e| RPCError::Network(NetworkError::new(&e)))?;
 
         let res: Result<Resp, Err> = resp.json().await.map_err(|e| RPCError::Network(NetworkError::new(&e)))?;

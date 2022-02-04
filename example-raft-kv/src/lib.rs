@@ -1,5 +1,4 @@
 #![feature(result_into_ok_or_err)]
-
 use openraft::Raft;
 
 use crate::network::rpc::ExampleNetwork;

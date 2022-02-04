@@ -44,7 +44,7 @@ async fn main() -> std::io::Result<()> {
 
     // Create a instance of where the Raft data will be stored.
     let store = Arc::new(ExampleStore::default());
-
+    
     let client = Arc::new(reqwest::Client::new());
 
     // Create the network layer that will connect and communicate the raft instances and
