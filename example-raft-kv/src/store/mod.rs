@@ -6,6 +6,7 @@ use std::sync::Arc;
 use std::sync::Mutex;
 
 use anyerror::AnyError;
+use openraft::Membership;
 use openraft::async_trait::async_trait;
 use openraft::raft::Entry;
 use openraft::raft::EntryPayload;
@@ -225,6 +226,23 @@ impl RaftStorage<ExampleRequest, ExampleResponse> for ExampleStore {
                     }
                 },
                 EntryPayload::Membership(ref mem) => {
+
+                    // let bytes = bincode::serialize(&mem).unwrap();
+                    let bytes = bincode::serde::encode_to_vec(
+                      mem, 
+                      bincode::config::legacy()
+                    ).unwrap();
+
+                    // let mem2: Membership = bincode::deserialize(&bytes[..]).unwrap();
+                    let mem2: Membership = bincode::serde::decode_from_slice(
+                      &bytes, 
+                      bincode::config::legacy()
+                    ).unwrap().0;
+                    
+                    if mem != &mem2 {
+                      panic!();
+                    }
+
                     sm.last_membership = Some(EffectiveMembership {
                         log_id: entry.log_id,
                         membership: mem.clone(),

@@ -32,6 +32,7 @@ pub struct Opt {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
     // Setup the logger
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
